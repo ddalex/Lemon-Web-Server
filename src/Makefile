@@ -1,5 +1,6 @@
 SRCC:=$(shell find ./src/ -name "*.c")
 SRCCXX:=$(shell find ./src/ -name "*.cpp")
+HEADXX:=$(shell find ./src/ -name "*.h")
 
 OBJC:=$(subst .c,.o,$(addprefix $(BUILDDIR)/, $(subst ./src/,,$(SRCC))))
 
@@ -10,10 +11,9 @@ OBJS:=$(OBJC) $(OBJCXX)
 $(OBJC): $(SRCC)
 	$(CC) -o $@ -c $(CFLAGS) $<
 
-$(OBJCXX): $(SRCCXX)
-	echo $(OBJCXX)
+$(OBJCXX): $(SRCCXX) $(HEADXX)
 	$(CXX) -o $@ -c $(CXXFLAGS) $<
 
 $(BUILDDIR)/lemon: $(OBJS)
-	$(LD) -o $@ $(LDFLAGS) $<	
+	$(CXX) -o $@ $(LDFLAGS) $(OBJS)	
 
