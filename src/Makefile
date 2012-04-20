@@ -1,17 +1,18 @@
-SRCC:=$(shell find ./src/ -name "*.c")
-SRCCXX:=$(shell find ./src/ -name "*.cpp")
-HEADXX:=$(shell find ./src/ -name "*.h")
+DIR:=src
+SRCC:=$(shell find ./$(DIR)/ -name "*.c")
+SRCCXX:=$(shell find ./$(DIR)/ -name "*.cpp")
+HEADXX:=$(shell find ./$(DIR)/ -name "*.h")
 
-OBJC:=$(subst .c,.o,$(addprefix $(BUILDDIR)/, $(subst ./src/,,$(SRCC))))
+OBJC:=$(subst .c,.o,$(addprefix $(BUILDDIR)/, $(subst ./$(DIR)/,,$(SRCC))))
 
-OBJCXX:=$(subst .c,.o,$(addprefix $(BUILDDIR)/,$(subst ./src/,,$(SRCCXX))))
+OBJCXX:=$(subst .c,.o,$(addprefix $(BUILDDIR)/,$(subst ./$(DIR)/,,$(SRCCXX))))
 
 OBJS:=$(OBJC) $(OBJCXX) 
 
-$(OBJC): $(SRCC)
+$(OBJC): $(BUILDDIR)/%.o : $(DIR)/%.c
 	$(CC) -o $@ -c $(CFLAGS) $<
 
-$(OBJCXX): $(SRCCXX) $(HEADXX)
+$(OBJCXX): $(BUILDDIR)/%.opp : $(DIR)/%.cpp $(HEADXX)
 	$(CXX) -o $@ -c $(CXXFLAGS) $<
 
 $(BUILDDIR)/lemon: $(OBJS)

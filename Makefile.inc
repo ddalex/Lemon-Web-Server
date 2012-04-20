@@ -1,7 +1,7 @@
 CC	= gcc
 CXX	= g++
-CFLAGS	= -g -O0 -Wall
-CXXFLAGS= -g -O0 -Wall
+CFLAGS	= -g -rdynamic -O0 -Wall
+CXXFLAGS= -g -rdynamic -O0 -Wall
 LD	= gcc
 LDFLAGS	= -lpthread
 AR	= ar
