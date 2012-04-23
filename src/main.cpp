@@ -5,11 +5,11 @@
 
 #include "LockingQueue.h"
 #include "LockedElement.h"
-
+#include "Exception.h"
 using namespace lemon;
 
-/*
-LockingQueue queue;
+
+LockingQueue<void> queue;
 
 void* creator(void *ptr)
 {
@@ -18,13 +18,23 @@ void* creator(void *ptr)
 	for (i = 0; i < 10; i++ )
 	{
 		sleep(1);
-		queue.Push(new LockedElement);
+		queue.Push(new LockedElement<void>);
+		printf("Pushed!\n");
+		queue.Push(new LockedElement<void>);
+		printf("Pushed!\n");
+		queue.Pop();
 	}
+	return NULL;
 }
-*/
 
 int main(int argc, char**argv)
 {
-    return 0;
+	pthread_t producer;
+	pthread_create(&producer, NULL, creator, NULL);
+	do {
+		queue.Pop();
+		printf("size: %d\n", queue.GetSize());
+	} while (true);
+	return 0;
 }
 

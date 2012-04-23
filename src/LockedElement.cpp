@@ -9,13 +9,4 @@
 
 namespace lemon {
 
-LockedElement::LockedElement() {
-	// TODO Auto-generated constructor stub
-
-}
-
-LockedElement::~LockedElement() {
-	// TODO Auto-generated destructor stub
-}
-
 }

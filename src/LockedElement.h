@@ -12,19 +12,23 @@
 
 namespace lemon {
 
+template <class T> class LockingQueue;
+
+template <class T>
 class LockedElement {
 public:
-	LockedElement();
-	virtual ~LockedElement();
+	LockedElement() {}
+	LockedElement(T *payload) { this->payload = payload; }
+	virtual ~LockedElement() {}
 
 	/* TODO: find a way to force type compatibility for all payloads */
-	void SetPayload(void* payload);
-	void* GetPayload();
+	void SetPayload(T* payload) { this->payload = payload; }
+	T* GetPayload() { return payload; }
 
 private:
 	LockedElement *next, *prev;
-
-	friend class LockingQueue;
+	T *payload;
+	friend class LockingQueue<T>;
 };
 
 

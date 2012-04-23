@@ -10,16 +10,23 @@
 
 #include <string>
 
+#define EXCEPTION(x, ...)   do {\
+	throw Exception(__FILE__, __LINE__, x); \
+	} while (1 == 0);
+
 namespace lemon {
 
 class Exception {
 public:
-	Exception();
-	Exception(char *s);
-	Exception(std::string s);
+	Exception(char *file, int line);
+	Exception(char *file, int line, const char *s, ...);
+	Exception(char *file, int line, const std::string s);
 	virtual ~Exception();
 private:
 	std::string desc;
+	std::string filename;
+	unsigned int lineno;
+	void dump();
 };
 
 }
