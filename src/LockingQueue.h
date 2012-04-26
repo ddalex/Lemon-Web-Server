@@ -62,23 +62,25 @@ public:
 	}
 
 	LockedElement<T>* Pop() {
-		LockedElement<T>* l = doLockedPop();
+		LockedElement<T>* l;
 
-		while (l == NULL) {/* make a bet that we have something */
+		do {/* make a bet that we have something */
 			sem_wait(&semtx);
 			l = doLockedPop();
-		}
+		} while (l == NULL);
 		return l;
 	}
 
 
 	size_t GetSize() {
 		int semval;
+		pthread_mutex_lock(&opmtx);
 		int retval = sem_getvalue(&semtx, &semval);
 		if (retval != 0)
 			EXCEPTION(strerror(retval));
 		if ((unsigned int)semval != length)
 			EXCEPTION("Inconsistent semaphore: %d length %d semval", length, semval);
+		pthread_mutex_unlock(&opmtx);
 		return length;
 	}
 
@@ -87,10 +89,12 @@ private:
 	size_t 	length;
 
 	LockedElement<T>* doLockedPop() {
-		LockedElement<T>* l = first;
-		if (l == NULL) return l;
-
 		pthread_mutex_lock(&opmtx);
+		LockedElement<T>* l = first;
+		if (l == NULL)
+		{
+			goto exit;
+		}
 		if (first == last)
 			last = NULL;
 		first = l->next;
@@ -99,8 +103,8 @@ private:
 		l->prev = NULL;
 		l->next = NULL;
 		length --;
+		exit:
 		pthread_mutex_unlock(&opmtx);
-
 		return l;
 	}
 
