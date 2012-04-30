@@ -13,13 +13,13 @@ LockingQueue<void> queue;
 
 void* creator(void *ptr)
 {
-	int i;
+	long int i;
 	srand(0);
 	for (i = 0; i < 50; i++ )
 	{
 		LockedElement<void> *le = new LockedElement<void>((void *)i);
 		queue.Push(le);
-		printf("Pushed %lx! %x\n", (long unsigned int) ptr, i);
+		printf("Pushed %lx! %lx\n", (long unsigned int) ptr, i);
 		usleep(1);
 	}
 	return NULL;
@@ -36,6 +36,7 @@ void* destroyer(void *ptr)
 			i++;
 			usleep(1);
 	} while (i < 50);
+	return NULL;
 }
 
 int main(int argc, char**argv)

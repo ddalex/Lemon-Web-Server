@@ -116,10 +116,12 @@ public:
 	/**
 	 * Returns number of bytes that are available for processing
 	 */
-	ssize_t GetReadSize() {
+	inline ssize_t GetReadSize() {
 		if (rspp > rsrp) return rspp - rsrp;
 		else return rspp + BUFFERSIZE - rsrp;
 	}
+
+	inline LockedElement<StreamBuffer> GetLockedElement() { return thiselement; }
 
 private:
 	int fd;

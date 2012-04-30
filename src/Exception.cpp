@@ -13,7 +13,7 @@
 
 namespace lemon {
 
-Exception::Exception(char *file, int line) {
+Exception::Exception(const char *file, int line) {
 	// TODO Auto-generated constructor stub
 	desc = "Unknown Exception";
 	filename = file;
@@ -21,7 +21,7 @@ Exception::Exception(char *file, int line) {
 	dump();
 }
 
-Exception::Exception(char *file, int line, const char *s, ...) {
+Exception::Exception(const char *file, int line, const char *s, ...) {
 	va_list ap;
 	//std::stringstream ss = std::stringstream(s);
 	va_start(ap, s);
@@ -31,7 +31,7 @@ Exception::Exception(char *file, int line, const char *s, ...) {
 	dump();
 }
 
-Exception::Exception(char *file, int line, const std::string s) {
+Exception::Exception(const char *file, int line, const std::string s) {
 	desc = s;
 	filename = file;
 	lineno = line;

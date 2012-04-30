@@ -18,9 +18,9 @@ namespace lemon {
 
 class Exception {
 public:
-	Exception(char *file, int line);
-	Exception(char *file, int line, const char *s, ...);
-	Exception(char *file, int line, const std::string s);
+	Exception(const char *file, int line);
+	Exception(const char *file, int line, const char *s, ...);
+	Exception(const char *file, int line, const std::string s);
 	virtual ~Exception();
 private:
 	std::string desc;

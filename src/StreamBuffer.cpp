@@ -40,7 +40,7 @@ void StreamBuffer::NetRead() {
 		rspp += size;
 	}
 	// we got data to parse
-	rqueue->Push(thiselement);
+	rqueue->Push(&thiselement);
 
 nrexit:
 	pthread_mutex_unlock(&readmtx);
@@ -49,11 +49,10 @@ nrexit:
 	{
 		switch (errno){
 		case EAGAIN:
-		case EWOULDBLOCK:
 				break;
 		case EBADF:
 		case EIO:
-				Close();
+				NetClose();
 		default:
 			EXCEPTION(strerror(errno));
 		}
@@ -68,7 +67,7 @@ void StreamBuffer::NetWrite() {
 	if (wspp < wsrp) {
 		while (wsrp < BUFFERSIZE) {
 			size = write(fd, writebuffer + wsrp, BUFFERSIZE - wsrp);
-			if (size == -1) goto nwexit; // TODO: handle errors gracefully
+			if (size == -1) goto nwexit;
 			wsrp += size;
 		}
 		wsrp = 0;
@@ -76,7 +75,7 @@ void StreamBuffer::NetWrite() {
 
 	while (wsrp < wspp) { // straight forward write, start pointer is lower than stop pointer
 		size = write(fd, writebuffer + wsrp, wspp - wsrp);
-		if (size == -1) goto nwexit; // TODO: handle errors gracefully
+		if (size == -1) goto nwexit;
 		wsrp += size;
 	}
 
@@ -86,11 +85,10 @@ nwexit:
 	{
 		switch (errno){
 		case EAGAIN:
-		case EWOULDBLOCK:
 				break;
 		case EBADF:
 		case EIO:
-				Close();
+				NetClose();
 		default:
 			EXCEPTION(strerror(errno));
 		}
@@ -101,7 +99,7 @@ void StreamBuffer::NetFlush() {
 	// NOOP implementation since we disregard limits, so far....
 }
 
-void NetClose()
+void StreamBuffer::NetClose()
 {
 	close(fd);
 }
@@ -123,8 +121,8 @@ void StreamBuffer::WriteBytes(int size, char* buffer) {
 
 
 
-void StreamBuffer::ReadLn() {
-	int rp;
+char * StreamBuffer::ReadLn() {
+	unsigned int rp;
 	int s = 0;
 	register char x;
 	enum { ST_LINE, ST_END } readstate = ST_LINE;
