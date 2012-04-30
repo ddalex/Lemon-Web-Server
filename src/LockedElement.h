@@ -17,7 +17,6 @@ template <class T> class LockingQueue;
 template <class T>
 class LockedElement {
 public:
-	LockedElement() {}
 	LockedElement(T *payload) { this->payload = payload; }
 	virtual ~LockedElement() {}
 

@@ -17,8 +17,7 @@ void* creator(void *ptr)
 	srand(0);
 	for (i = 0; i < 50; i++ )
 	{
-		LockedElement<void> *le = new LockedElement<void>;
-		le->SetPayload((void *)i);
+		LockedElement<void> *le = new LockedElement<void>((void *)i);
 		queue.Push(le);
 		printf("Pushed %lx! %x\n", (long unsigned int) ptr, i);
 		usleep(1);
