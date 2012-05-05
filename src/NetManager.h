@@ -12,7 +12,8 @@
 
 #ifndef NETMANAGER_H_
 #define NETMANAGER_H_
-
+#include "LockingQueue.h"
+#include "StreamBuffer.h"
 #include "Thread.h"
 
 namespace lemon {
@@ -22,12 +23,15 @@ class NetConnection;
 
 class NetManager: lemon::Thread {
 public:
-	NetManager();
+	NetManager(StreamBufferQueue q) : rqueue(q) {}
 	virtual ~NetManager();
 
 	void StartService();
 
-	void cbNewConnection(NetConnection *nc);
+	void NewConnection(NetConnection *nc);
+
+private:
+	StreamBufferQueue rqueue;
 };
 
 }

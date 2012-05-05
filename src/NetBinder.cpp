@@ -70,7 +70,7 @@ void * NetBinder::run(void *) {
 			continue;
 		}
 		// we have the connection ready
-		netmanager->cbNewConnection(new NetConnection(retval, peer_addr, peer_addr_size));
+		netmanager->NewConnection(new NetConnection(retval, peer_addr, peer_addr_size));
 	}
 
 	close(mysocket);

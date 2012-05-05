@@ -32,10 +32,15 @@
 
 namespace lemon {
 
+class StreamBuffer;
+
+typedef LockingQueue<StreamBuffer> StreamBufferQueue;
+typedef LockedElement<StreamBuffer> StreamBufferElement;
+
+
 class StreamBuffer {
 public:
-	StreamBuffer();
-	StreamBuffer(unsigned int fd, LockingQueue<StreamBuffer> *rqueue, LockingQueue<StreamBuffer> *wqueue = NULL) : thiselement(this)
+	StreamBuffer(unsigned int fd, StreamBufferQueue *rqueue = NULL, StreamBufferQueue *wqueue = NULL) : thiselement(this)
 	{
 		int err = 0;
 		this->fd = fd;
@@ -104,13 +109,13 @@ public:
 	/** Registers itself to a Queue to which the stream will post a notification
 	 * that it read bytes and those needs processing.
 	 */
-	void RegisterReadQueue(LockingQueue<StreamBuffer> *rqueue);
+	void RegisterReadQueue(StreamBufferQueue *rqueue);
 
 	/**
 	 * Registers (optionally) a Queue to which the stream will post a notification
 	 * that it has bytes to send. If empty, it will send straight away.
 	 */
-	void RegisterWriteQueue(LockingQueue<StreamBuffer> *wqueue);
+	void RegisterWriteQueue(StreamBufferQueue *wqueue);
 
 
 	/**
@@ -121,7 +126,7 @@ public:
 		else return rspp + BUFFERSIZE - rsrp;
 	}
 
-	inline LockedElement<StreamBuffer> GetLockedElement() { return thiselement; }
+	inline StreamBufferElement GetLockedElement() { return thiselement; }
 
 private:
 	int fd;

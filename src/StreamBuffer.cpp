@@ -11,10 +11,6 @@
 
 namespace lemon {
 
-StreamBuffer::StreamBuffer() : thiselement(this) {
-	EXCEPTION("StreamBuffer must be called with the proper open file descriptor and read queue");
-}
-
 StreamBuffer::~StreamBuffer() {
 	// TODO Auto-generated destructor stub
 }
@@ -151,6 +147,11 @@ rlexit:
 	}
 	else
 		return NULL;
+}
+
+void StreamBuffer::RegisterReadQueue(StreamBufferQueue *rq)
+{
+	this->rqueue = rq;
 }
 
 }
