@@ -18,7 +18,7 @@ public:
 	NetProcessor();
 	virtual ~NetProcessor();
 
-	LockingQueue<StreamBuffer>	*GetProcessorQueue() { return eventsQueue; }
+	LockingQueue<StreamBuffer>	*GetProcessorQueue() { return &eventsQueue; }
 
 
 private:

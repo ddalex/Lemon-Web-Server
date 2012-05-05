@@ -14,11 +14,11 @@
 #define NETMANAGER_H_
 
 #include "Thread.h"
-#include "NetBinder.h"
 
 namespace lemon {
 
-class StreamBuffer;
+class NetConnection;
+
 
 class NetManager: lemon::Thread {
 public:
@@ -27,7 +27,7 @@ public:
 
 	void StartService();
 
-	void cbNewConnection(int fd);
+	void cbNewConnection(NetConnection *nc);
 };
 
 }

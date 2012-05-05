@@ -19,7 +19,7 @@ namespace lemon {
 
 class NetManager;
 
-class NetBinder : Thread {
+class NetBinder : public Thread {
 public:
 	NetBinder(NetManager *nm, unsigned short port);
 	virtual ~NetBinder();
