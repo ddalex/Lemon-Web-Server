@@ -23,8 +23,7 @@ void* creator(void *ptr)
 	srand(0);
 	for (i = 0; i < NUM_TESTS; i++ )
 	{
-		LockedElement<void> *le = new LockedElement<void>;
-		le->SetPayload((void *)(id*NUM_TESTS+i));
+		LockedElement<void> *le = new LockedElement<void>((void *)(id*NUM_TESTS+i));
 		queue.Push(le);
 
 		pthread_mutex_lock(&marker_mutex);
