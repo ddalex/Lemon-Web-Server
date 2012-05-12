@@ -12,18 +12,19 @@
 #include "ThreadingManager.h"
 #include "Exception.h"
 
-void * __run_helper(void *p);
 
 namespace lemon {
+
+static void * __run_helper(void *p);
 
 class Thread {
 public:
 	inline Thread() { thm = ThreadingManager::getThreadingManager(); }
 	inline virtual ~Thread() {}
 	inline void Start() { runState = STATE_RUNNING; thm->addManagedThread(this); pthread_create( &mythread, NULL, &__run_helper, this); }
-	inline void Stop()  { runState = STATE_STOPPED; }
+	inline void Stop()  { runState = STATE_STOPPED; wait(); thm->removeManagedThread(this);}
 
-public:
+protected:
 	virtual void * run() = 0;
 
 protected:
@@ -38,6 +39,8 @@ protected:
 		pthread_join(mythread, &result);
 		return result;
 	}
+
+	friend void * lemon::__run_helper(void *p);
 };
 
 static inline void * __run_helper(void *p) {
@@ -50,6 +53,5 @@ static inline void * __run_helper(void *p) {
 }
 
 }
-
 
 #endif /* THREAD_H_ */

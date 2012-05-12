@@ -8,6 +8,7 @@
 #ifndef THREADINGMANAGER_H_
 #define THREADINGMANAGER_H_
 
+#include <cstddef>
 #include <set>
 
 namespace lemon {
