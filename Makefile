@@ -1,4 +1,4 @@
-all: prereq binary
+all: prereq binary tests
 
 include Makefile.inc
 
