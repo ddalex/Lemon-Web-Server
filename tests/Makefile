@@ -27,9 +27,9 @@ tests: $(TESTLIST)
 
 # manually define each test build rules
 
-$(BUILDDIR)/t1_queue: prereq $(OBJS_T) $(addprefix $(BUILDDIR)/, Exception.opp)
+$(BUILDDIR)/t1_queue: prereq $(OBJS_T) $(addprefix $(BUILDDIR)/, Exception.opp )
 	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $(addprefix $(BUILDDIR)/, t1_queue.opp Exception.opp ) 
 
-$(BUILDDIR)/t2_threading: prereq $(OBJS_T) $(addprefix $(BUILDDIR)/, Exception.opp ThreadingManager.opp)
+$(BUILDDIR)/t2_threading: prereq $(OBJS_T) $(addprefix $(BUILDDIR)/, Exception.opp ThreadingManager.opp Thread.opp )
 	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $(addprefix $(BUILDDIR)/, t2_threading.opp \
-	ThreadingTest.opp Exception.opp ThreadingManager.opp  ) 
+	ThreadingTest.opp Exception.opp ThreadingManager.opp Thread.opp ) 
