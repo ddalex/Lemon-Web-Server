@@ -12,10 +12,11 @@
 
 class ThreadingTest : public lemon::Thread {
 public:
-	ThreadingTest();
-	virtual ~ThreadingTest();
+	ThreadingTest(int id = 0) : id(id) {}
+	virtual ~ThreadingTest() {}
 
 private:
+	int id;
 	virtual void *run();
 };
 

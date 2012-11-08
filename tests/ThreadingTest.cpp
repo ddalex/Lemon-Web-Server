@@ -9,21 +9,12 @@
 
 #include <stdio.h>
 
-ThreadingTest::ThreadingTest() {
-	// TODO Auto-generated constructor stub
-
-}
-
-ThreadingTest::~ThreadingTest() {
-	// TODO Auto-generated destructor stub
-}
-
 void *ThreadingTest::run() {
 	unsigned long long i = 0;
 	while (runState == lemon::Thread::STATE_RUNNING)
 	{
 		usleep(10000);
-		printf("Running %llu\n", i++);
+		printf("Running %d: %llu\n", id, i++);
 	}
 	return NULL;
 }
