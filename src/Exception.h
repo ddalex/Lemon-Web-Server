@@ -9,9 +9,10 @@
 #define EXCEPTION_H_
 
 #include <string>
+#include <iostream>
 
-#define EXCEPTION(x, ...)   do {\
-	throw Exception(__FILE__, __LINE__, x); \
+#define EXCEPTION(X...)   do {\
+	throw Exception(__FILE__, __LINE__, X); \
 	} while (1 == 0);
 
 namespace lemon {
@@ -20,13 +21,14 @@ class Exception {
 public:
 	Exception(const char *file, int line);
 	Exception(const char *file, int line, const char *s, ...);
-	Exception(const char *file, int line, const std::string s);
+	Exception(const char *file, int line, const std::string s, ...);
 	virtual ~Exception();
 private:
 	std::string desc;
 	std::string filename;
 	unsigned int lineno;
 	void dump();
+	void printDemangledLine(char *line);
 };
 
 }
