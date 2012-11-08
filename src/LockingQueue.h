@@ -57,15 +57,14 @@ public:
 		}
 		last = l;
 		length ++;
-		sem_post(&semtx);
 		pthread_mutex_unlock(&opmtx);
+		sem_post(&semtx);
 	}
 
 	LockedElement<T>* Pop() {
 		LockedElement<T>* l;
 
 		do {/* make a bet that we have something */
-			sem_wait(&semtx);
 			l = doLockedPop();
 		} while (l == NULL);
 		return l;
@@ -90,6 +89,12 @@ private:
 
 	LockedElement<T>* doLockedPop() {
 		pthread_mutex_lock(&opmtx);
+		if (sem_trywait(&semtx) == -1) {
+			pthread_mutex_unlock(&opmtx);
+			if (errno == EAGAIN)
+				usleep(10);
+			return NULL;
+		}
 		LockedElement<T>* l = first;
 		if (l == NULL)
 		{
